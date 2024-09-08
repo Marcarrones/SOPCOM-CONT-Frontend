@@ -1,0 +1,13 @@
+<div class="col" style="width: auto; padding: 0 .25rem; margin: -.5rem 0">
+    @for (c of criteria; track c.id){
+        <div class="criteria">
+            <div class="criteria-label"> {{c.name}} </div>
+            @for (v of c.values; track v.id){
+                <div class="criteria-value">
+                    <span>{{v.name}}</span>
+                    <input type="checkbox" [checked]="checkAssigned(v)" (change)="toggleCriteria($event, v)">
+                </div>
+            }
+        </div>
+    }
+</div>

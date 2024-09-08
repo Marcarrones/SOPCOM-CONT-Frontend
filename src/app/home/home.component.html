@@ -1,0 +1,7 @@
+@if (this.selectedContext !== undefined) {
+    <div>{{this.selectedContext!.name}}</div>
+} 
+@if (this.selectedMap !== undefined) {
+    <div>{{this.selectedMap!.name}}</div>
+    <app-map-graph></app-map-graph>
+}

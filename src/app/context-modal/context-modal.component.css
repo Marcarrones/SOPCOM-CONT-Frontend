@@ -1,0 +1,16 @@
+
+form .row {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+form > mat-form-field {
+    margin-bottom: .5rem;
+    width: 100%;
+}
+
+:host ::ng-deep mat-tab-body > * > * {
+    padding-top: 1rem;
+}

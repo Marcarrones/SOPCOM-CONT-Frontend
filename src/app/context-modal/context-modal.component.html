@@ -1,0 +1,92 @@
+<h2  mat-dialog-title [innerHTML]="this.modalTitle">Context</h2>
+<mat-dialog-content>
+    <mat-tab-group [selectedIndex]="selectedTabIndex"
+                    (selectedIndexChange)="changeTab($event)">
+        <mat-tab label="Select Context"> 
+            <form [formGroup]="selectContextForm" style="width: 100%; height: auto;">
+                <div class="row">
+                    <mat-form-field subscriptSizing="dynamic" appearance="outline" style="flex-grow: 1;">
+                        <mat-label>
+                            Select Context
+                        </mat-label>
+                        <mat-select formControlName="selectContextControl"
+                            (selectionChange)="onSelectContext($event.value)">
+                            @for (context of contextList; track context.id) {
+                                <mat-option [value]="context.id"> {{context.name}} </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <div style="padding: 5px; align-content:center">
+                        <button mat-icon-button (click)="deleteSelectedContext()"><mat-icon>delete</mat-icon></button>
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="Update Context" [disabled]="this.selectedContext == undefined">
+            <form [formGroup]="updateContextForm">
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Id
+                    </mat-label>
+                    <input matInput formControlName="contextIdControl" placeholder="Context Id" [value]="this.selectedContext?.id">
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Name
+                    </mat-label>
+                    <input matInput formControlName="contextNameControl" placeholder="Context Name"  [value]="this.selectedContext?.name">
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Type
+                    </mat-label>
+                    <mat-select formControlName="contextTypeSelect" placeholder="Context Type" [value]="this.selectedContext?.type">
+                        @for (type of contextTypes; track type.id) {
+                            <mat-option [value]="type.id"> {{type.name}} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </mat-tab>
+        <mat-tab label="Add Context"> 
+            <form [formGroup]="newContextForm">
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Id
+                    </mat-label>
+                    <input matInput formControlName="contextIdControl" placeholder="Context Id">
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Name
+                    </mat-label>
+                    <input matInput formControlName="contextNameControl" placeholder="Context Name">
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Type
+                    </mat-label>
+                    <mat-select formControlName="contextTypeSelect" placeholder="Context Type">
+                        @for (type of contextTypes; track type.id) {
+                            <mat-option [value]="type.id"> {{type.name}} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Repository
+                    </mat-label>
+                    <mat-select formControlName="contextRepositorySelect" placeholder="Context Repository">
+                        @for (repository of publicRepositories; track repository.id) {
+                            <mat-option [value]="repository.id"> {{repository.name}} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button mat-dialog-close>Close</button>
+    <button mat-flat-button *ngIf="selectedTabIndex != 0" (click)="onSubmit()">{{(selectedTabIndex == 1) ? "Update" : "Submit"}}</button>
+</mat-dialog-actions>

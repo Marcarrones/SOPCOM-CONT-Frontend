@@ -1,0 +1,5 @@
+:host ::ng-deep #map, :host ::ng-deep #id-map {
+    width: 99%;
+    height: 600px;
+    border: 1px solid lightgray;
+  }

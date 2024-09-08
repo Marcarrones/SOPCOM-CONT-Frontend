@@ -1,0 +1,18 @@
+<div class="col" style="width: auto; padding: 0 .25rem; margin: -.5rem 0">
+    @for (s of filteredStrategies; track s.strategy.id){
+        <div class="strategy">
+            <div class="strategy-label"> {{s.strategy.name}} </div>
+            @for (mc of s.methodChunk; track mc.id){
+                <div class="row" style="justify-content: space-between;">
+                    <div [ngClass]="!mc.canApply ? 'invalid': ''" class="methodChunk">
+                        <div class="methodChunk-name">{{mc.name}}</div>
+                        <div class="methodChunk-description">
+                            {{mc.description}}
+                        </div>
+                    </div>
+                    <input type="checkbox" [disabled]="!mc.canApply" [checked]="checkMethodChunkSelected(mc)" (change)="toggleMethodChunk($event, mc)">
+                </div>
+            }
+        </div>
+    }
+</div>

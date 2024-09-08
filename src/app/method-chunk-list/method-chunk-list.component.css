@@ -1,0 +1,70 @@
+.col{
+    display: flex;
+    flex-direction: column;
+    margin: .25rem;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+    margin: .25rem;
+}
+
+.strategy {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    margin: .5rem 0;    
+    border: 1px solid #eee;
+    border-radius: 12px;
+    box-shadow: 2px 2px 6px -3px;
+    padding-bottom: .5rem;
+}
+
+    .strategy-label {
+        width: auto;
+        align-content: center;
+        padding: .25rem;
+        height: 1.5rem;
+        /*border: 1px solid #ccc;*/
+        margin: .25rem 0 .25rem .25rem;
+        font-size: 16px;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+
+.methodChunk {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: .25rem;
+    height: auto;
+    flex-grow: 1;
+    margin: .25rem 0 .25rem 2rem;
+    box-shadow: #2f2f2f 2px 2px 6px -3px;
+}
+    .methodChunk.invalid {
+        background: #eee;
+        color: #2f2f2f;
+    }
+
+    .methodChunk ~ input { 
+        zoom: 2;
+        align-self: center;
+     }
+
+    .methodChunk-name {
+        font-size: 14px;
+        padding: .25rem;
+        text-transform: capitalize;
+    }
+    .methodChunk-description {
+        font-size: 12px;
+        color: #474747;
+        padding: .25rem;
+        text-transform: capitalize;
+    } 
+    .invalid .methodChunk-description {
+        color: #2f2f2f;
+    }

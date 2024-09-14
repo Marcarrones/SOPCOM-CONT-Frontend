@@ -40,9 +40,19 @@
                     <mat-label>
                         Context Type
                     </mat-label>
-                    <mat-select formControlName="contextTypeSelect" placeholder="Context Type" [value]="this.selectedContext?.type">
+                    <mat-select formControlName="contextTypeSelectControl" placeholder="Context Type" >
                         @for (type of contextTypes; track type.id) {
                             <mat-option [value]="type.id"> {{type.name}} </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field subscriptSizing="dynamic" appearance="outline" >
+                    <mat-label>
+                        Context Repository
+                    </mat-label>
+                    <mat-select formControlName="contextRepositorySelect" placeholder="Context Repository">
+                        @for (repository of publicRepositories; track repository.id) {
+                            <mat-option [value]="repository.id"> {{repository.name}} </mat-option>
                         }
                     </mat-select>
                 </mat-form-field>
@@ -66,7 +76,7 @@
                     <mat-label>
                         Context Type
                     </mat-label>
-                    <mat-select formControlName="contextTypeSelect" placeholder="Context Type">
+                    <mat-select formControlName="contextTypeSelectControl" placeholder="Context Type">
                         @for (type of contextTypes; track type.id) {
                             <mat-option [value]="type.id"> {{type.name}} </mat-option>
                         }

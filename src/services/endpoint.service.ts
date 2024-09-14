@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, map, ReplaySubject, tap, throwError } from "rxjs";
+import { catchError, ReplaySubject, tap, throwError } from "rxjs";
 import { Observable } from "rxjs/internal/Observable";
 
 @Injectable({
@@ -24,31 +24,46 @@ export class EndpointService {
     public get<T>(endpoint: string): Observable<T | undefined | never> {
         return this.http.get<T>(EndpointService.GET_URL(endpoint))
                 .pipe(catchError(this.handleError))
-                .pipe(tap(data => { if (EndpointService.LOGGING) console.log("GET: ", EndpointService.GET_URL(endpoint), data); }));
+                .pipe(tap<T>(data => { if (EndpointService.LOGGING) console.log("GET: ", EndpointService.GET_URL(endpoint), data); }));
     }
 
     public post(endpoint: string, body: any) : Observable<any | undefined | never> {
         let postSubject = new ReplaySubject<any | undefined | never>(1);
         this.http.post(EndpointService.GET_URL(endpoint), body)
-                .pipe(catchError(this.handleError))
-                .pipe(tap(data => { if (EndpointService.LOGGING) console.log("POST: ", EndpointService.GET_URL(endpoint), data); }))
-                .subscribe(data => {
-                    postSubject.next(data); // triggers post
-                    postSubject.complete(); // avoids multiple post calls from future subscribers
-                });
+            .pipe(catchError(this.handleError))
+            .pipe(tap(data => { if (EndpointService.LOGGING) console.log("POST: ", EndpointService.GET_URL(endpoint), data); }))
+            .subscribe(data => {
+                postSubject.next(data); // triggers post
+                postSubject.complete(); // avoids multiple post calls from future subscribers
+            }
+        );
         return postSubject;
     }
 
     public put<T>(endpoint: string, body: any) : Observable<T | undefined | never> {
-        return this.http.put<T>(EndpointService.GET_URL(endpoint), body)
-                .pipe(catchError(this.handleError))
-                .pipe(tap(data => { if (EndpointService.LOGGING) console.log("PUT: ", EndpointService.GET_URL(endpoint), data); }));
+        let putSubject = new ReplaySubject<T | undefined | never>(1);
+        this.http.put<T>(EndpointService.GET_URL(endpoint), body)
+            .pipe(catchError(this.handleError))
+            .pipe(tap(data => { if (EndpointService.LOGGING) console.log("PUT: ", EndpointService.GET_URL(endpoint), data); }))
+            .subscribe(data => {
+                putSubject.next(data); // triggers put
+                putSubject.complete(); // avoids multiple put calls from future subscribers
+            }
+        );
+        return putSubject;
     }
 
     public delete(endpoint: string) : Observable<any  | undefined | never> {
-        return this.http.delete(EndpointService.GET_URL(endpoint))
-                .pipe(catchError(this.handleError))
-                .pipe(tap(data => { if (EndpointService.LOGGING) console.log("DELETE: ", EndpointService.GET_URL(endpoint), data); }));
+        let deleteSubject = new ReplaySubject<any | undefined | never>(1);
+        this.http.delete(EndpointService.GET_URL(endpoint))
+            .pipe(catchError(this.handleError))
+            .pipe(tap(data => { if (EndpointService.LOGGING) console.log("DELETE: ", EndpointService.GET_URL(endpoint), data); }))
+            .subscribe(data => {
+                deleteSubject.next(data); // triggers delete
+                deleteSubject.complete(); // avoids multiple delete calls from future subscribers
+            }
+        );
+        return deleteSubject;
     }
 
     private handleError(error: HttpErrorResponse) {

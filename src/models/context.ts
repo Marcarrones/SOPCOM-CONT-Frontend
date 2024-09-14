@@ -3,13 +3,13 @@ import { Repository } from "./repository";
 export class Context {
     public id: string;
     public name: string;
-    public type: number;
-    public repository: Repository;
+    public context_type: number;
+    public repository: string;
 
-    constructor(id: string, name: string, type: number, repository: Repository) {
+    constructor(id: string, name: string, type: number, repository: string) {
         this.id = id
         this.name = name
-        this.type = type
+        this.context_type = type
         this.repository = repository
     }
 
@@ -18,6 +18,6 @@ export class Context {
     }
 
     static fromJson(json: any): Context { 
-        return new Context(json.id, json.name, json.type, Repository.fromJson(json.repository));
+        return new Context(json.id, json.name, json.context_type, json.repository);
     }
 }

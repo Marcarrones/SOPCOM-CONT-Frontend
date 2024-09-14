@@ -42,7 +42,7 @@ export class ContextService {
     public getContexts() : Observable<Context[]>  {
         this.endpointService.get<Context[]>('context').subscribe({
             next: data => {
-                this.contextListSubject.next(data ?? []);
+                this.contextListSubject.next(data?.map(ct => Context.fromJson(ct)) ?? []);
             }, 
             error: _ => { catchError(e => of([]) ); }
         });

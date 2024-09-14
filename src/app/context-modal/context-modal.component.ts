@@ -7,8 +7,7 @@ import { Context } from '../../models/context';
 import { Repository } from '../../models/repository';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EndpointService } from '../../services/endpoint.service';
-
+import { MapService } from '../../services/map.service';
 
 @Component({
   selector: 'app-context-modal',
@@ -38,13 +37,14 @@ export class ContextModalComponent {
   
   constructor( 
     public contextService: ContextService,
+    public mapService: MapService,
     public snackBar: MatSnackBar
   ) { 
     // NEW CONTEXT FORM
     this.newContextForm = new FormGroup({
       contextIdControl: new FormControl('', Validators.required),
       contextNameControl: new FormControl('', Validators.required),
-      contextTypeSelect: new FormControl('', Validators.required),
+      contextTypeSelectControl: new FormControl('', Validators.required),
       contextRepositorySelect: new FormControl('', Validators.required),
     });
     // SELECT CONTEXT FORM
@@ -55,7 +55,8 @@ export class ContextModalComponent {
     this.updateContextForm = new FormGroup({
       contextIdControl: new FormControl({value: this.selectedContext?.id, disabled: true}, Validators.required),
       contextNameControl: new FormControl(this.selectedContext?.name, Validators.required),
-      contextTypeSelect: new FormControl(this.selectedContext?.type, Validators.required),
+      contextTypeSelectControl: new FormControl(this.contextTypes.find(type => this.selectedContext?.context_type === type.id), Validators.required),
+      contextRepositorySelect: new FormControl({value: this.selectedContext?.repository, disabled: true}, Validators.required),
     });
 
     // Get info for selects
@@ -92,28 +93,27 @@ export class ContextModalComponent {
   }
 
 // #region Select Context
-  public compareWithContext(context : Context, value : Context) : boolean { return context?.id === value?.id; }
-
   public onSelectContext(contextId: string) : void { 
     var context = this.contextList.find(context => context.id === contextId); 
     // triggers subscribe event in constructor ->  setSelectedContext(data)
     this.contextService.setCurrentContext(context);
   }
-
+  
   // Set selected context
   private setSelectedContext(context: Context | undefined) {
-    //if(EndpointService.LOGGING) console.log("setSelectedContext(", context,")"); 
     this.selectedContext = context;
-    this.selectContextForm.controls['selectContextControl'].setValue(context); 
+    this.selectContextForm.controls['selectContextControl'].setValue(context?.id); 
     this.loadUpdateContextForm(context);
+    this.mapService.setSelectedMap(undefined);
   }
 
   private loadUpdateContextForm(context: Context | undefined) {
     this.updateContextForm.controls['contextIdControl'].setValue(context?.id);
     this.updateContextForm.controls['contextNameControl'].setValue(context?.name);
-    this.updateContextForm.controls['contextTypeSelect'].setValue(context?.type);
-    this.selectContextForm.controls['selectContextControl'].setValue(context?.id);
+    this.updateContextForm.controls['contextTypeSelectControl'].setValue(context?.context_type);
+    this.updateContextForm.controls['contextRepositorySelect'].setValue(context?.repository);
   }
+
  //#endregion 
 
   public deleteSelectedContext() {
@@ -161,7 +161,7 @@ export class ContextModalComponent {
     var c = new Context(
       formGroup.controls['contextIdControl']?.value ?? fallback?.id,
       formGroup.controls['contextNameControl']?.value ?? fallback?.name,
-      formGroup.controls['contextTypeSelect']?.value?? fallback?.type,
+      formGroup.controls['contextTypeSelectControl']?.value?? fallback?.context_type,
       formGroup.controls['contextRepositorySelect']?.value ?? fallback?.repository
     );
     //console.log('Serialized context: ', c);

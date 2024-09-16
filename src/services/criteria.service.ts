@@ -4,13 +4,12 @@ import { Context } from '../models/context';
 import { Criteria, CriteriaValue } from '../models/criteria';
 import { map, Observable } from 'rxjs';
 
-
 @Injectable({
     providedIn: 'root'
 })
 export class CriteriaService {
     constructor(
-        private endpointService: EndpointService
+        private endpointService: EndpointService,
     ) { }
 
     public getContextCriteria(context: Context) : Observable<Criteria[] | undefined> {

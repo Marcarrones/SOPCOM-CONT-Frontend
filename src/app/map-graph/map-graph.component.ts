@@ -3,7 +3,7 @@ import { Data, Edge, Network, Node } from "vis-network/peer/esm/vis-network";
 import { DataSet } from "vis-data/peer/esm/vis-data";
 import { MapService } from '../../services/map.service';
 import { MapFull, MapType } from '../../models/map';
-import { MethodChunk } from '../../models/method-chunk';
+import { CanApply, MethodChunk } from '../../models/method-chunk';
 import { MethodChunkService } from '../../services/method-chuck.service';
 import { ContextService } from '../../services/context.service';
 import { Context } from '../../models/context';
@@ -48,14 +48,22 @@ export class MapGraphComponent implements OnInit {
   ngOnInit(): void {
     this.contextService.CurrentContext.subscribe(data => this.context = data);
     this.mapService.selectedMap.subscribe(data => this.changeMap(data)); 
-    this.mapService.mapType.subscribe(data => this.changeMapType(data)); 
+    this.mapService.mapType.subscribe(data => this.changeMapType(data));
+    this.methodChunkService.SelectedMethodChunks.subscribe(data => { 
+      this.selectedMethodChunks = data; 
+      this.buildNetworkGraph();
+    });
+    this.methodChunkService.CanApplyMethodChunks.subscribe(data => {
+      this.canApplyMethodChunks = data.map((mcs: CanApply) => mcs.methodChunk.filter(mc => mc.canApply)).flat();
+      this.buildNetworkGraph();
+    });
   }
 
   changeMap(map: MapFull | undefined) {
     this.currentMap = map;
     if (this.context != undefined) {
-      this.methodChunkService.getSelectedMethodChunks(this.context!).subscribe(data => this.selectedMethodChunks = data);
-      this.methodChunkService.getCanApply(this.context!).subscribe(data => this.canApplyMethodChunks = data.map(mcs => mcs.methodChunk.filter(mc => mc.canApply)).flat());
+      this.methodChunkService.getSelectedMethodChunks(this.context);
+      this.methodChunkService.getCanApply(this.context);
     } else console.warn("[MAP] Undefined context", this.currentMap);
 
       this.buildNetworkGraph();
@@ -63,26 +71,25 @@ export class MapGraphComponent implements OnInit {
 
   changeMapType(type: MapType) {
     this.currentType = type;
-    console.log("[MAP] Changing map type to", type.toString());
     this.buildNetworkGraph();
   }
 
   buildNetworkGraph() {
     var map = undefined;
     if (this.currentMap != undefined) {
+      map = this.currentMap.clone();
       switch (this.currentType) {
-        case MapType.All:
-          map = this.currentMap;
-          break;
         case MapType.CanApply:
-          map = new MapFull(this.currentMap!.id, this.currentMap!.name,this.currentMap!.repository , this.currentMap!.strategies.filter(s => this.canApplyMethodChunks.some(mc => mc.strategy.id === s.id)), this.currentMap!.goals.filter(g => this.canApplyMethodChunks.some(mc => mc.goal.id === g.id)));
+          map.strategies.forEach(s => s.active = this.canApplyMethodChunks.some(mc => mc.strategy.id === s.id));
           break
         case MapType.Selected:
-          map = new MapFull(this.currentMap!.id, this.currentMap!.name,this.currentMap!.repository , this.currentMap!.strategies.filter(s => this.selectedMethodChunks.some(mc => mc.strategy.id === s.id)), this.currentMap!.goals.filter(g => this.selectedMethodChunks.some(mc => mc.goal.id === g.id)));
+          map.strategies.forEach(s => s.active = this.selectedMethodChunks.some(mc => mc.strategy.id === s.id && mc.canApply));
           break;
+        default:
+          map.strategies.forEach(s => s.active = true);
       }
     }
-    console.log("[MAP] Building network graph with", this.currentType.toString(), map);
+    //console.log("[MAP] Building network graph with", this.currentType, map, this.canApplyMethodChunks, this.selectedMethodChunks);
     const data = this.buildNetworkData(map);
     this.networkGraph = new Network(this.networkContainer!.nativeElement, data, this.options);
   }

@@ -1,28 +1,38 @@
 <mat-tab-group  animationDuration="0ms" [ngStyle]="{ 'max-height.px' : maxHeight }">
-    <mat-tab label="Cirteria" [routerLink]="['/criteria']">
-        <div class="col">
-            <app-criteria-list> </app-criteria-list>
-        </div>
-    </mat-tab>
-    <mat-tab label="Map" [routerLink]="['/map']">
-        <div class="col">
-            @if (this.selectedContext != undefined){
-                <mat-form-field>
-                    <mat-label>Map</mat-label>
-                    <mat-select [(ngModel)]="this.selectedMap" (valueChange)="onSelectMap($event)" >
-                        @for(map of this.mapList; track map.id){
-                            <mat-option [value]="map.id">{{map.name}}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            }
-            <div class="buttons" style="margin-bottom: 1rem;">
-                <button [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.All)">Show Original</button>
-                <button [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.CanApply)">Show Can Apply</button>
-                <button [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.Selected)">Show Selected</button>
+    <mat-tab label="Cirteria">
+        @if (this.selectedContext != undefined){
+            <div class="col">
+                <app-criteria-list> </app-criteria-list>
             </div>
-            <app-method-chunk-list> </app-method-chunk-list>
-        </div>
+        }
+        @else {
+            <app-missing-card text="No context selected" subText="Please select a context to continue"></app-missing-card>
+        }
+    </mat-tab>
+    <mat-tab label="Map">
+        @if (this.selectedContext != undefined){
+            <div class="col">
+                <form [formGroup]="mapSelect" style="display: flex;">
+                    <mat-form-field subscriptSizing="dynamic" appearance="outline" style="flex-grow: 1;">
+                        <mat-label>Map</mat-label>
+                        <mat-select formControlName="mapSelectControl" (valueChange)="onSelectMap($event)" >
+                            @for(map of this.mapList; track map.id){
+                                <mat-option [value]="map.id">{{map.name}}</mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+                <div class="buttons" style="margin-bottom: 1rem;">
+                    <button [ngClass]="lastMapType == mapTypes.All ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.All)">Show Original</button>
+                    <button [ngClass]="lastMapType == mapTypes.CanApply ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.CanApply)">Show Can Apply</button>
+                    <button [ngClass]="lastMapType == mapTypes.Selected ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.Selected)">Show Selected</button>
+                </div>
+                <app-method-chunk-list> </app-method-chunk-list>
+            </div>
+        } 
+        @else {
+            <app-missing-card text="No context selected" subText="Please select a context to continue"></app-missing-card>
+        }
     </mat-tab>
 </mat-tab-group>
 

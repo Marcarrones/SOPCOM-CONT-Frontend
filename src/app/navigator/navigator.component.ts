@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MaterialModule } from '../shared/material.module';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ContextService } from '../../services/context.service';
 import { Context } from '../../models/context';
 import { CriteriaListComponent } from '../criteria-list/criteria-list.component';
@@ -10,7 +9,7 @@ import { MapService } from '../../services/map.service';
 import { MapSimple, MapType } from '../../models/map';
 import { MatButton } from '@angular/material/button';
 import { MethodChunkListComponent } from "../method-chunk-list/method-chunk-list.component";
-
+import { MissingCard } from "../missing-card/missing-card.component";
 
 @Component({
   selector: 'app-navigator',
@@ -19,11 +18,11 @@ import { MethodChunkListComponent } from "../method-chunk-list/method-chunk-list
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
-    RouterLink,
     CriteriaListComponent,
     FormsModule,
     MatButton,
-    MethodChunkListComponent
+    MethodChunkListComponent,
+    MissingCard
 ],
   templateUrl: './navigator.component.html',
   styleUrl: './navigator.component.css'
@@ -31,17 +30,23 @@ import { MethodChunkListComponent } from "../method-chunk-list/method-chunk-list
 export class NavigatorComponent {
   @Input() maxHeight!: number;
   mapTypes = MapType;
+  public lastMapType: MapType = MapType.All;
   
   public selectedContext: Context | undefined = undefined;
   public selectedMap: MapSimple | undefined = undefined;
 
   public mapList: MapSimple[] = [];
+  public mapSelect: FormGroup;
   
   constructor(
     private contextService: ContextService,
     private mapService: MapService,
   ) {
-    this.mapService.selectedMap.subscribe(m => this.setMap(m));
+    this.mapSelect = new FormGroup({
+      mapSelectControl: new FormControl('',[])
+    });
+    this.mapService.selectedMap.subscribe(m => this.setMap(m?.asMapSimple()));
+    this.mapService.mapType.subscribe(data => this.lastMapType = data);
     this.contextService.CurrentContext.subscribe(d => this.setContext(d));
   }
   
@@ -54,6 +59,7 @@ export class NavigatorComponent {
 
   private setMap(map: MapSimple | undefined) {
     this.selectedMap = map;
+    this.mapSelect.get('mapSelectControl')?.setValue(map?.id);
   }
 
   onSelectMap(mapChange: string) {
@@ -61,7 +67,6 @@ export class NavigatorComponent {
   }
 
   onClickMapType(event : Event ,type: MapType) {
-    console.log('[NAV] Setting map type:', type);
     this.mapService.setMapType(type);
   }
 }

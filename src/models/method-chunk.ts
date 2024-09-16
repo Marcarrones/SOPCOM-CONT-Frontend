@@ -19,8 +19,8 @@ export class MethodChunk {
             data.name,
             data.description,
             data.activity,
-            Goal.fromJson(data.goal),
-            Strategy.fromJson(data.strategy),
+            Goal.fromJson( typeof data.goal === 'string' ? JSON.parse(data.goal) : data.goal),
+            Strategy.fromJson(typeof data.strategy === 'string' ? JSON.parse(data.strategy) : data.strategy),
             data.repository_id,
             data.canApply === 'YES',
         );

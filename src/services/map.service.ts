@@ -11,8 +11,8 @@ export class MapService {
     private selectedMapSubject: BehaviorSubject<MapFull | undefined> = new BehaviorSubject<MapFull | undefined>(undefined);
     public selectedMap: Observable<MapFull | undefined> = this.selectedMapSubject.asObservable();
     
-    public mapTypeSubjecty: BehaviorSubject<MapType> = new BehaviorSubject<MapType>(MapType.All);
-    public mapType: Observable<MapType> = this.mapTypeSubjecty.asObservable();
+    public mapTypeSubject: BehaviorSubject<MapType> = new BehaviorSubject<MapType>(MapType.All);
+    public mapType: Observable<MapType> = this.mapTypeSubject.asObservable();
 
     constructor(
         private endpointService: EndpointService
@@ -27,7 +27,8 @@ export class MapService {
     }
 
     public setMapType(type: MapType) {
-        this.mapTypeSubjecty.next(type);
+        if (type != this.mapTypeSubject.value)
+            this.mapTypeSubject.next(type);
     }
     
     public getMapList(context: Context) : Observable<MapSimple[] | undefined >{

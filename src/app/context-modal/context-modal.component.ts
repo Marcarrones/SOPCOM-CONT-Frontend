@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MaterialModule } from '../shared/material.module';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ContextService } from '../../services/context.service';
@@ -58,7 +58,6 @@ export class ContextModalComponent {
       contextTypeSelectControl: new FormControl(this.contextTypes.find(type => this.selectedContext?.context_type === type.id), Validators.required),
       contextRepositorySelect: new FormControl({value: this.selectedContext?.repository, disabled: true}, Validators.required),
     });
-
     // Get info for selects
     // GET CONTEXTS
     this.contextService.getContexts().subscribe({

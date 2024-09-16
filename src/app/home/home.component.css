@@ -1,0 +1,41 @@
+.separator {
+    margin-top: .15rem;
+    margin-bottom: .25rem;
+    height: 1px;
+    width: 100%;
+    background-color: #e0e0e0;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: .25rem;
+    padding: 0;
+}
+
+
+:host .col {
+    display: flex;
+    flex-direction: column;
+    margin: .25rem;
+  }
+  
+  :host .buttons {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow-y: clip;
+    margin: .5rem;
+  }   
+    .buttons * {
+      font-size: .8rem;
+      min-width: fit-content;
+    }
+  
+    .buttons .active {
+      background-color: #ffe066;
+      color: black;
+      border-right: 2px solid #ffcc00;
+    }
+  

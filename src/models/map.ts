@@ -26,6 +26,10 @@ export class MapFull {
     }
 
     public asMapSimple() : MapSimple { return new MapSimple(this.id, this.name); }
+
+    public clone(strategies: Strategy[] = this.strategies, goals: Goal[] = this.goals) : MapFull {
+        return new MapFull(this.id, this.name, this.repository, strategies ?? this.strategies.map(s => s.clone()), goals ?? this.goals.map(g => g.clone()));
+    }
 }
 
 export enum MapType {

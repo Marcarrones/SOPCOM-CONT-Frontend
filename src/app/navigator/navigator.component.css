@@ -54,7 +54,15 @@
   overflow-x: auto;
   white-space: nowrap;
   overflow-y: clip;
+  margin: .5rem;
 }   
   .buttons * {
     font-size: .8rem;
+    min-width: fit-content;
+  }
+
+  .buttons .active {
+    background-color: #ffe066;
+    color: black;
+    border-right: 2px solid #ffcc00;
   }

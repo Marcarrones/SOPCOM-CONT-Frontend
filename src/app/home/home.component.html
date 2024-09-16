@@ -1,7 +1,20 @@
-@if (this.selectedContext !== undefined) {
-    <div>{{this.selectedContext!.name}}</div>
-} 
-@if (this.selectedMap !== undefined) {
-    <div>{{this.selectedMap!.name}}</div>
-    <app-map-graph></app-map-graph>
-}
+<div class="col">
+    @if (this.selectedContext === undefined) {
+        <app-missing-card text="No context selected" subText="Please select a context to continue"></app-missing-card>
+    } @else {
+        <h1 style="margin-bottom: 0;">{{this.selectedContext.name}} </h1>
+        <div class="separator"></div>
+        @if (this.selectedMap !== undefined && this.selectedContext !== undefined) {
+            <h2>{{this.selectedMap!.name}}</h2>
+            <div class="buttons" style="margin-bottom: 1rem;">
+                <button [ngClass]="lastMapType == mapTypes.All ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.All)">Show Original</button>
+                <button [ngClass]="lastMapType == mapTypes.CanApply ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.CanApply)">Show Can Apply</button>
+                <button [ngClass]="lastMapType == mapTypes.Selected ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.Selected)">Show Selected</button>
+            </div>
+            <app-map-graph></app-map-graph>
+        }
+        @else {
+            <app-missing-card text="No map selected" subText="Please select a map to continue"></app-missing-card>
+        }
+    }
+</div>

@@ -1,8 +1,11 @@
-import { Component, input, Input, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { Criteria, CriteriaValue } from '../../models/criteria';
 import { CriteriaService } from '../../services/criteria.service';
 import { Context } from '../../models/context';
 import { ContextService } from '../../services/context.service';
+import { MethodChunkService } from '../../services/method-chuck.service';
+import { MapService } from '../../services/map.service';
+import { MapType } from '../../models/map';
 
 @Component({
   selector: 'app-criteria-list',
@@ -18,28 +21,21 @@ export class CriteriaListComponent {
   public assignedCriteria: Criteria[] = [];
 
   constructor(
-    private criteriaService: CriteriaService,
     private contextService: ContextService,
+    private criteriaService: CriteriaService,
+    private methodChunkService: MethodChunkService,
+    private mapService: MapService,
   ) { 
     this.contextService.CurrentContext.subscribe(context => {
       this.context = context;
-      this.loadCriteria();
+      if (this.context) {
+        this.criteriaService.getContextCriteria(this.context!).subscribe(c => { this.criteria = c ?? []; });
+        this.criteriaService.getAssignedContextCriteria(this.context!).subscribe(c => { this.assignedCriteria = c ?? []; });
+      } else {
+        this.criteria = [];
+        this.assignedCriteria = [];
+      }
     });
-  }
-
-  public loadCriteria() {
-    if (this.context) {
-      this.criteriaService.getContextCriteria(this.context!).subscribe(c => { this.criteria = c ?? [];
-        //console.log('Criteria:',this.context?.id, this.criteria);
-      });
-      this.criteriaService.getAssignedContextCriteria(this.context!).subscribe(c => { this.assignedCriteria = c ?? [];
-        //console.log('AssignedCriteria:',this.context?.id, this.assignedCriteria);
-      });
-    } else {
-      //console.error('No context provided to CriteriaListComponent');
-      this.criteria = [];
-      this.assignedCriteria = [];
-    }
   }
 
   public checkAssigned(value : CriteriaValue): boolean {
@@ -48,11 +44,22 @@ export class CriteriaListComponent {
 
   public toggleCriteria (event : Event, value : CriteriaValue) : void {
     const checked = (event.target as HTMLInputElement).checked;
-    console.log("[CRITERIA] Toggling criteria", value, checked);
     if (checked) {
-      this.criteriaService.assignCriteriaValue(this.context!, value);
-    } else {
-      this.criteriaService.removeCriteriaValue(this.context!, value);
+      this.criteriaService.assignCriteriaValue(this.context!, value)
+        .subscribe(_ => this.propagateCriteriaUpdate());
+    } else if (value.assignedMC.length !== 0 || window.confirm("Selected criteria is assigned to selected method chunks. Do you want to unassign it?")) {
+      this.criteriaService.removeCriteriaValue(this.context!, value)
+        .subscribe(_ => this.propagateCriteriaUpdate());
     }
+    else { // if the user cancels the unassignment
+      (event.target as HTMLInputElement).checked = true;
+    }
+
+    this.mapService.setMapType(MapType.CanApply);
+  }
+
+  propagateCriteriaUpdate(){
+    this.methodChunkService.getCanApply(this.context!);
+    this.methodChunkService.getSelectedMethodChunks(this.context!);
   }
 }

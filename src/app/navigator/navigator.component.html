@@ -1,7 +1,10 @@
 <mat-tab-group  animationDuration="0ms" [ngStyle]="{ 'max-height.px' : maxHeight }">
-    <mat-tab label="Cirteria">
+    <mat-tab label="Criteria">
         @if (this.selectedContext != undefined){
             <div class="col">
+                <div class="sticky-top">
+                    <h3>Context Criteria</h3>
+                </div>
                 <app-criteria-list> </app-criteria-list>
             </div>
         }
@@ -12,22 +15,29 @@
     <mat-tab label="Map">
         @if (this.selectedContext != undefined){
             <div class="col">
-                <form [formGroup]="mapSelect" style="display: flex;">
-                    <mat-form-field subscriptSizing="dynamic" appearance="outline" style="flex-grow: 1;">
-                        <mat-label>Map</mat-label>
-                        <mat-select formControlName="mapSelectControl" (valueChange)="onSelectMap($event)" >
-                            @for(map of this.mapList; track map.id){
-                                <mat-option [value]="map.id">{{map.name}}</mat-option>
-                            }
-                        </mat-select>
-                    </mat-form-field>
-                </form>
-                <div class="buttons" style="margin-bottom: 1rem;">
-                    <button [ngClass]="lastMapType == mapTypes.All ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.All)">Show Original</button>
-                    <button [ngClass]="lastMapType == mapTypes.CanApply ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.CanApply)">Show Can Apply</button>
-                    <button [ngClass]="lastMapType == mapTypes.Selected ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.Selected)">Show Selected</button>
+                <div class="sticky-top">
+                    <form [formGroup]="mapSelect" style="display: flex;">
+                        <mat-form-field subscriptSizing="dynamic" appearance="outline" style="flex-grow: 1;">
+                            <mat-label>Map</mat-label>
+                            <mat-select formControlName="mapSelectControl" (valueChange)="onSelectMap($event)" >
+                                @for(map of this.mapList; track map.id){
+                                    <mat-option [value]="map.id">{{map.name}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
+                    <div class="buttons" style="margin-bottom: 1rem;">
+                        <button [ngClass]="lastMapType == mapTypes.All ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.All)">Show Original</button>
+                        <button [ngClass]="lastMapType == mapTypes.CanApply ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.CanApply)">Show Can Apply</button>
+                        <button [ngClass]="lastMapType == mapTypes.Selected ? 'active' : ''" [disabled]="selectedMap == undefined" mat-button (click)="onClickMapType($event, mapTypes.Selected)">Show Selected</button>
+                    </div>
+                    @if (this.selectedMap != undefined) {
+                        <h3>Selected Method Chunks</h3>
+                    }
                 </div>
-                <app-method-chunk-list> </app-method-chunk-list>
+                @if (this.selectedMap != undefined){
+                    <app-method-chunk-list> </app-method-chunk-list>
+                }
             </div>
         } 
         @else {

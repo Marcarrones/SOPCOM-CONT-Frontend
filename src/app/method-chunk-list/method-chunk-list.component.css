@@ -3,6 +3,7 @@
     flex-direction: column;
     margin: .25rem;
 }
+
 .row{
     display: flex;
     flex-direction: row;

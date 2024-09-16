@@ -1,3 +1,11 @@
+h3 {
+  border-bottom: 1px solid #ccc;
+  padding: 0 0 0.15rem;
+  font-weight: 600;
+  font-family: system-ui;
+  margin: .75rem 0;
+  background-color: white;
+}
 
 :host ::ng-deep mat-tab-group {
   flex-direction: row;
@@ -44,7 +52,6 @@
 :host .col {
   display: flex;
   flex-direction: column;
-  margin: .25rem;
 }
 
 :host .buttons {
@@ -65,4 +72,11 @@
     background-color: #ffe066;
     color: black;
     border-right: 2px solid #ffcc00;
+  }
+
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(180deg, #fff 0%, #fff 90% ,rgba(255, 255, 255, 0) 100%); 
+    z-index: 10;
   }

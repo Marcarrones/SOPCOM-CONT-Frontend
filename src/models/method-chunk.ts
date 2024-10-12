@@ -1,6 +1,7 @@
 import { Goal } from "./goal";
 import { Strategy } from "./strategy";
 
+
 export class MethodChunk {
     constructor(
         public id: string,

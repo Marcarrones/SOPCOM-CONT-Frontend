@@ -9,11 +9,12 @@ export class Strategy  {
         public goal_tgt: string,
         public goal_src: string,
         public active: boolean = true,
+        public methodChunkIds: string[] = [],
     ) { }
     
     
     static fromJson(json: any): Strategy {
-        return new Strategy (json.id, json.name, json.x, json.y, json.goal_tgt,  json.goal_src);
+        return new Strategy (json.id, json.name, json.x, json.y, json.goal_tgt,  json.goal_src, json.active, json?.methodChunkIds ?? []);
     }
     
     public asNode() : Node {
@@ -33,7 +34,7 @@ export class Strategy  {
         return { from: src, to: tgt, arrows: 'middle', color: (this.active ? "#2B7CE9" : 'lightgray' ), smooth: { enabled: true, type: 'cubicBezier', roundness: 0.5 } }
     }
 
-    clone(id = this.id, name = this.name, x = this.x, y = this.y, goal_tgt = this.goal_tgt, goal_src = this.goal_src, active = this.active): Strategy {
-        return new Strategy(id, name, x, y, goal_tgt, goal_src, active);
+    clone(id = this.id, name = this.name, x = this.x, y = this.y, goal_tgt = this.goal_tgt, goal_src = this.goal_src, active = this.active, methodChunkIds = this.methodChunkIds): Strategy {
+        return new Strategy(id, name, x, y, goal_tgt, goal_src, active, methodChunkIds);
     }
 }

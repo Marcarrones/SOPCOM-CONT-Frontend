@@ -31,8 +31,8 @@ export class MapGraphComponent implements OnInit {
       interaction: { hover: true, multiselect: false },
       manipulation: {
         enabled: false,
-        addNode: (nodeData: any,callback: any) => { console.log("Add Node", nodeData, callback); },
-        addEdge: (edgeData: any,callback: any) => { console.log("Add Edge", edgeData, callback); },   
+        addNode: false,
+        addEdge: false,
       },
   }
 

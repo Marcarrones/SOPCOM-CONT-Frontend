@@ -1,10 +1,10 @@
 import { Component, DoCheck, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
-import { MaterialModule } from '../shared/material.module';
-import { ContextService } from '../../services/context.service';
-import { Context } from '../../models/context';
-import { MapFull, MapType } from '../../models/map';
-import { MapService } from '../../services/map.service';
+import { MaterialModule } from '../../shared/material.module';
+import { ContextService } from '../../../services/context.service';
+import { Context } from '../../../models/context';
+import { MapFull, MapType } from '../../../models/map';
+import { MapService } from '../../../services/map.service';
 import { MapGraphComponent } from "../map-graph/map-graph.component";
 import { MissingCard } from "../missing-card/missing-card.component";
 import { CommonModule } from '@angular/common';

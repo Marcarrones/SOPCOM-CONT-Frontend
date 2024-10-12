@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Data, Edge, Network, Node } from "vis-network/peer/esm/vis-network";
 import { DataSet } from "vis-data/peer/esm/vis-data";
-import { MapService } from '../../services/map.service';
-import { MapFull, MapType } from '../../models/map';
-import { CanApply, MethodChunk } from '../../models/method-chunk';
-import { MethodChunkService } from '../../services/method-chuck.service';
-import { ContextService } from '../../services/context.service';
-import { Context } from '../../models/context';
+import { MapService } from '../../../services/map.service';
+import { MapFull, MapType } from '../../../models/map';
+import { CanApply, MethodChunk } from '../../../models/method-chunk';
+import { MethodChunkService } from '../../../services/method-chuck.service';
+import { ContextService } from '../../../services/context.service';
+import { Context } from '../../../models/context';
 
 @Component({
   selector: 'app-map-graph',

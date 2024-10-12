@@ -30,12 +30,12 @@ export class MapService {
         if (type != this.mapTypeSubject.value)
             this.mapTypeSubject.next(type);
     }
-    
+    // [GET] index.php/maps?repository=:repository
     public getMapList(context: Context) : Observable<MapSimple[] | undefined >{
         return this.endpointService.get<MapSimple[] | undefined>(`maps?repository=${context.repository}`);
     }
-
+    // [GET] index.php/maps/:id?fullMap=true
     public getMap(id: string) : Observable<MapFull | undefined> {
         return this.endpointService.get<any>(`maps/${id}?fullMap=true`).pipe(map(MapFull.fromJson));
     }
-}
+} 

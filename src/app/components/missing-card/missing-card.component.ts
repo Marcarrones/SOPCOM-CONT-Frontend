@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MaterialModule } from '../shared/material.module';
+import { MaterialModule } from '../../shared/material.module';
 
 @Component({
   selector: 'app-missing-card',

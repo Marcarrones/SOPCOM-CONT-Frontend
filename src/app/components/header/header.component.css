@@ -17,13 +17,36 @@ mat-toolbar {
     mat-toolbar a, mat-toolbar img {
         height: inherit;
     }
-
-h1.title {
-    margin-left: 10px; 
+h1.title { margin-left: 10px; }
+h1.title a {
+    margin-bottom: 0;
     font-size: 35px;
+    color: #000;
+    text-decoration: none;
     font-weight: 500;
     align-content: center;
-}
+    cursor: pointer;
+}   h1.title a:hover {
+        text-decoration: none;
+    } h1.title a:active {
+        text-decoration: none;
+    } h1.title a:focus {
+        text-decoration: none;
+    } h1.title a:visited {
+        text-decoration: none;
+    } h1.title a:link {
+        text-decoration: none;
+    } h1.title a:after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #000;
+        transition: width .3s;
+    } h1.title a:hover:after {
+        width: 100%;
+    }
+
 button[mat-raised-button] {
     box-sizing: border-box;
     position: relative;

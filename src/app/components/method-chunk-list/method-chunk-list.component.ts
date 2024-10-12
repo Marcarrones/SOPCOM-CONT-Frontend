@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { MethodChunkService } from '../../services/method-chuck.service';
-import { ContextService } from '../../services/context.service';
-import { Context } from '../../models/context';
-import { CanApply, MethodChunk } from '../../models/method-chunk';
+import { MethodChunkService } from '../../../services/method-chuck.service';
+import { ContextService } from '../../../services/context.service';
+import { Context } from '../../../models/context';
+import { CanApply, MethodChunk } from '../../../models/method-chunk';
 import { CommonModule } from '@angular/common';
-import { MapSimple, MapType } from '../../models/map';
-import { MapService } from '../../services/map.service';
+import { MapSimple, MapType } from '../../../models/map';
+import { MapService } from '../../../services/map.service';
 import { MissingCard } from "../missing-card/missing-card.component";
 
 @Component({
@@ -64,7 +64,7 @@ export class MethodChunkListComponent {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
       this.selectedMethodChunks.push(methodChunk);
-      this.methodChunkService.setSelectedMethodChunk(this.context!, methodChunk);
+      this.methodChunkService.addSelectedMethodChunk(this.context!, methodChunk);
     } else {
       this.selectedMethodChunks = this.selectedMethodChunks.filter(c => c.id !== methodChunk.id);
       this.methodChunkService.removeSelectedMethodChunk(this.context!, methodChunk);

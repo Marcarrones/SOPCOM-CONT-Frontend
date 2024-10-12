@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { MaterialModule } from '../shared/material.module';
+import { MaterialModule } from '../../shared/material.module';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ContextService } from '../../services/context.service';
-import { ContextType } from '../../models/context-type';
-import { Context } from '../../models/context';
-import { Repository } from '../../models/repository';
+import { ContextService } from '../../../services/context.service';
+import { ContextType } from '../../../models/context-type';
+import { Context } from '../../../models/context';
+import { Repository } from '../../../models/repository';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MapService } from '../../services/map.service';
+import { MapService } from '../../../services/map.service';
 
 @Component({
   selector: 'app-context-modal',

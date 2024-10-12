@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ContextModalComponent } from '../context-modal/context-modal.component';
-import { MaterialModule } from '../shared/material.module';
+import { MaterialModule } from '../../shared/material.module';
+import { EndpointService } from '../../../services/endpoint.service';
 
 @Component({
   selector: 'app-header',
@@ -14,6 +15,7 @@ import { MaterialModule } from '../shared/material.module';
 })
 
 export class HeaderComponent {
+  sopcomRepUrl: string = EndpointService.SERVER_URL + EndpointService.REP_PORT;
 
   constructor(
     private contextDialog: MatDialog

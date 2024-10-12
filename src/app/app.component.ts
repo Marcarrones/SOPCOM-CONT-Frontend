@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { MaterialModule } from './shared/material.module';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/header/header.component';
 import { RouterOutlet } from '@angular/router';
-import { NavigatorComponent } from "./navigator/navigator.component";
+import { NavigatorComponent } from "./components/navigator/navigator.component";
 import { Context } from '../models/context';
 import { ContextService } from '../services/context.service';
-import { HomeComponent } from "./home/home.component";
+import { HomeComponent } from "./components/home/home.component";
 
 @Component({
   selector: 'app-root',

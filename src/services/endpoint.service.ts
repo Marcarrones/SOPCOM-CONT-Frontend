@@ -12,10 +12,11 @@ export class EndpointService {
 
     static SERVER_URL = "http://localhost";
     //static SERVER_URL = "http://gessi3.essi.upc.edu";
-    static SERVER_PORT = "1036";
+    static SERVER_PORT = ":1036";
+    static REP_PORT = ":1037";
     static ENTRY_FILE = "index.php"
      
-    static URL = EndpointService.SERVER_URL + ":" + EndpointService.SERVER_PORT + "/" + EndpointService.ENTRY_FILE;
+    static URL = EndpointService.SERVER_URL + EndpointService.SERVER_PORT + "/" + EndpointService.ENTRY_FILE;
     static GET_URL(endpoint:string): string { return EndpointService.URL + "/" + endpoint; }
     constructor(
         public http: HttpClient
